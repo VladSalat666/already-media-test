@@ -1,16 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+
+from django.shortcuts import redirect, render
+
+from .forms.upload import FileUploadForm
 
 
 def index(request):
-  return render(request, 'index.html')
+  return render(request, 'index.html', name='index')
 
 
-def handle_form(request):
+def upload_file(request):
   if request.method == 'POST':
-    # Обработка данных формы
-    data = request.POST
-    # Выполнение логики обработки данных
-    return HttpResponse("Форма обработана")
+    form = FileUploadForm(request.POST, request.FILES)
+
+    if form.is_valid():
+      # uploaded_file = form.cleaned_data['file']
+      # image_type = form.cleaned_data['image_type']
+
+      return redirect('index')
   else:
-    return HttpResponse("Метод не поддерживается")
+    form = FileUploadForm()
+
+  return render(request, 'upload.html', {'form': form})
