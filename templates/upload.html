@@ -79,6 +79,10 @@
       color: red;
     }
 
+    .success {
+      color: green;
+    }
+
     #preview {
       margin: 20px auto 0;
       max-width: 400px;
@@ -92,11 +96,9 @@
     <h1>Upload an Image</h1>
     <p>Please select an image and enter what is shown on it</p>
 
-    {% if messages %}
-    <div class="message">
-      {% for message in messages %}
-      <p class="{{ message.tags }}">{{ message }}</p>
-      {% endfor %}
+    {% if status %}
+    <div class="message {% if status == 'success' %}success{% elif status == 'error' %}error{% endif %}">
+      {{ message }}
     </div>
     {% endif %}
 

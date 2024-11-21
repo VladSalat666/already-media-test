@@ -1,9 +1,9 @@
 from django.views.generic import TemplateView
 from django.urls import path
 
-from . import views
+from .views import upload
 
 urlpatterns = [
   path('', TemplateView.as_view(template_name='index.html'), name='index'),
-  path('upload/', views.upload_file, name='upload'),
+  path('upload/', upload.upload_file, name='upload'),
 ]

@@ -1,10 +1,6 @@
 from django import forms
 
-IMAGE_CHOICES = [
-  ('food', 'Food'),
-  ('nature', 'Nature'),
-  ('city', 'City'),
-]
+from ..types.image import IMAGE_TYPE
 
 
 class FileUploadForm(forms.Form):
@@ -12,7 +8,10 @@ class FileUploadForm(forms.Form):
     label='Choose an image',
     widget=forms.FileInput(attrs={'id': 'file_input'})
   )
-  image_type = forms.ChoiceField(choices=IMAGE_CHOICES, label='Select Image Type')
+  image_type = forms.ChoiceField(
+    label='Select Image Type',
+    choices=IMAGE_TYPE
+  )
 
   def clean_file(self):
     file = self.cleaned_data.get('file')
