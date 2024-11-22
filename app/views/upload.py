@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from ..models.image import ImageModel
 from ..forms.upload import FileUploadForm
+from ..ai.image import classify_image
 
 logger = logging.getLogger(__name__)
 
@@ -14,24 +15,34 @@ def upload_file(request):
 
     if form.is_valid():
       try:
+        file = form.cleaned_data['file']
+        predictions = classify_image(file)
+
         ImageModel(
-          file_data=form.cleaned_data['file'].read(),
-          file_name=form.cleaned_data['file'].name,
-          image_type=form.cleaned_data['image_type'],
+          file_data=file.read(),
+          file_name=file.name,
+          image_type=file.content_type,
+          provided_image_classification=form.cleaned_data['image_classification'],
+          predicted_image_classification=[
+            {
+              'class_name': class_name,
+              'score': score
+            } for class_name, score in predictions
+          ]
         ).save()
 
         return render(request, 'upload.html', {
-            'form': form,
-            'status': 'success',
-            'message': 'File successfully uploaded and saved.',
-          })
+          'form': form,
+          'status': 'success',
+          'message': 'File successfully uploaded and saved.',
+        })
       except Exception as e:
         logger.error("Error while saving file to the database: %s", e)
 
         return render(request, 'upload.html', {
-            'form': form,
-            'status': 'error',
-            'message': 'Internal Server Error: Could not save the file.',
+          'form': form,
+          'status': 'error',
+          'message': 'Internal Server Error: Could not save the file.',
         })
   else:
     form = FileUploadForm()
