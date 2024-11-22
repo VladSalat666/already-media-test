@@ -53,6 +53,7 @@
       width: 100%;
     }
 
+    a,
     button {
       display: inline-block;
       margin-top: 20px;
@@ -63,6 +64,7 @@
       border-radius: 5px;
       font-size: 1.2em;
       cursor: pointer;
+      text-decoration: none;
     }
 
     button:hover {
@@ -112,7 +114,10 @@
              alt="Image Preview" />
       </div>
 
-      <button type="submit">Upload File</button>
+      <div>
+        <a href="{% url 'index' %}">Back</a>
+        <button type="submit">Upload File</button>
+      </div>
     </form>
 
     {% if form.non_field_errors %}
