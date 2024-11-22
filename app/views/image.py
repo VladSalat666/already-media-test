@@ -1,5 +1,6 @@
 
 import logging
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from ..models.image import ImageModel
@@ -48,3 +49,13 @@ def upload_file(request):
     form = FileUploadForm()
 
   return render(request, 'upload.html', {'form': form})
+
+
+def get_list():
+  documents = ImageModel.objects.values(
+    'file_name',
+    'provided_image_classification',
+    'predicted_image_classification',
+  )
+
+  return JsonResponse(list(documents), safe=False)
