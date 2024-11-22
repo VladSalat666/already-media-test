@@ -51,7 +51,7 @@ def upload_file(request):
   return render(request, 'upload.html', {'form': form})
 
 
-def get_list():
+def get_list(_):
   documents = ImageModel.objects.values(
     'file_name',
     'provided_image_classification',
