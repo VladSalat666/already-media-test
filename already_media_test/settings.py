@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xbr4@oqcqal7d)*=s=nt5gh0p($ge0^7v4w4gf_emxy5+)djn9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('PROD', 'False') == 'False'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if DEBUG == False else []
 
 # Application definition
 
@@ -80,7 +79,7 @@ DATABASES = {
         'NAME': 'already_media_test_db',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'mongodb://localhost:27017',
+            'host': f"mongodb://{os.getenv('MONGO_HOST', 'localhost')}:27017",
         }
     }
 }
